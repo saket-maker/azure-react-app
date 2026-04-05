@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import "dotenv/config";
 
 function App() {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch(
-      'https://my-first-web-app-aphyhjdfdxc3fxg6.centralindia-01.azurewebsites.net/',
-    )
-      .then((res) => res.text())
-      .then((data) => setMessage(data));
+    fetch(`${process.env.REACT_APP_API_URL}/api/users`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setMessage(data);
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h1>React + Azure 🚀</h1>
       <p>{message}</p>
     </div>
