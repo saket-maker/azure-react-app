@@ -4,13 +4,24 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/users`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setMessage(data);
+    const apiUrl = process.env.REACT_APP_API_URL;
+    if (!apiUrl) {
+      console.error("REACT_APP_API_URL is not defined");
+      return;
+    }
+
+    fetch(apiUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        return res.json();
       })
-      .catch((err) => console.error(err));
+      .then((data) => {
+        setMessage(data.message || JSON.stringify(data));
+      })
+      .catch((err) => {
+        console.error("Fetch failed:", err);
+        setMessage(`Fetch failed: ${err.message}`);
+      });
   }, []);
 
   return (
