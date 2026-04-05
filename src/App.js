@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "dotenv/config";
 
 function App() {
   const [message, setMessage] = useState("");
